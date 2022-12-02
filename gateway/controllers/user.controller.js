@@ -1,0 +1,15 @@
+
+const axios = require("axios");
+const request = require("../helpers/request");
+
+exports.signup = (req, res, next) => {
+    const URL = "http://localhost:8000/signup";
+    const METHOD = "put";
+    return request(URL, METHOD, req, res, next);
+}
+
+exports.login = (req, res, next) => {
+    const URL = "http://localhost:8000/login";
+    const METHOD = "post";
+    return request(URL, METHOD, req, res, next);
+}

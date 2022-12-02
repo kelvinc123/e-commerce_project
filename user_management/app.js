@@ -1,6 +1,8 @@
 const express = require("express"); // call express
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const cors = require("cors");
+const http = require("http");
 
 const app = express(); // define our app using express
 
@@ -8,6 +10,9 @@ const app = express(); // define our app using express
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// cors
+app.use(cors());
 
 // username and password for MongoDB
 const username = "main_user";
@@ -25,11 +30,10 @@ app.use("/", userRoutes);
 
 // For handling error, passed by calling next on above routes (alerts, status, etc)
 app.use((error, req, res, next) => {
-  console.log(error);
   const status = error.statusCode || 500;
   const message = error.message;
   const data = error.data;
-  res.status(status).json({ message: message, data: data });
+  res.status(status).send({ message: message, data: data });
 });
 
 // DB connection & run the app
@@ -43,7 +47,7 @@ mongoose
   .then((result) => {
     console.log("Successfully connected to the database");
     app.listen(port, () => {
-      console.log("Running on port " + port);
+      console.log("Database running on port " + port);
     });
   })
   .catch((err) => {
@@ -51,4 +55,8 @@ mongoose
     process.exit();
   });
 
-module.exports = app;
+
+
+const PORT = 8000
+app.listen(PORT);
+console.log('User Management server running on port ' + PORT);

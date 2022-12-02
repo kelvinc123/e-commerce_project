@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/user.model");
 
+const JWT_SECRET = "supersecret";
+
 exports.signup = (req, res, next) => {
   const errors = validationResult(req); // validation defined from the routes
   if (!errors.isEmpty()) {
@@ -81,8 +83,11 @@ exports.login = (req, res, next) => {
       const token = jwt.sign(
         {
           username: loadedUser.username,
+          first_name: loadedUser.first_name,
+          last_name: loadedUser.last_name,
+          address: loadedUser.address
         },
-        "supersecret", // another input for jwt function
+        JWT_SECRET, // another input for jwt function
         { expiresIn: "5d" } // specify the expired token time
       );
       res.status(200).json({
