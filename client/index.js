@@ -121,16 +121,41 @@ const createDOMElements = (productData, ratingsByProduct) => {
         : 0
     }) `
 
-    // make it a dropdown and submit button instead, get from todolist or yelp or other projects?
-    const productAddRatingButton = document.createElement("button")
-    productAddRatingButton.classList.add("product_add_rating")
-    productAddRatingButton.textContent = "Add Rating"
-    productAddRatingButton.addEventListener("click", () => {
-      console.log("clicked productAddRatingButton")
+    // Create array of options to be added
+    const ratingOptions = ["--Choose Rating--", "1", "2", "3", "4", "5"]
+
+    // Create and append select list
+    const ratingSelectList = document.createElement("select")
+    ratingSelectList.classList.add("rating-selectList")
+
+    // Create and append the options
+    for (let i = 0; i < ratingOptions.length; i++) {
+      const option = document.createElement("option")
+      option.value = ratingOptions[i]
+      option.text = ratingOptions[i]
+      ratingSelectList.appendChild(option)
+    }
+
+    // Create input tag
+    const ratingSelectSubmitButton = document.createElement("input")
+    ratingSelectSubmitButton.classList.add("submit-button")
+    ratingSelectSubmitButton.type = "submit"
+    ratingSelectSubmitButton.value = "submit rating"
+    ratingSelectSubmitButton.addEventListener("click", (event) => {
+      event.preventDefault()
+      if (ratingSelectList.value === "--Choose Rating--") {
+        return
+      }
+      console.log(ratingSelectList.value)
     })
 
+    // Create form tag
+    const ratingsForm = document.createElement("form")
+    ratingsForm.classList.add("ratings-form")
+    ratingsForm.appendChild(ratingSelectList)
+    ratingsForm.appendChild(ratingSelectSubmitButton)
     if (!isLoggedIn) {
-      productAddRatingButton.style.display = "none"
+      ratingsForm.style.display = "none"
     }
 
     productDiv.append(
@@ -142,7 +167,7 @@ const createDOMElements = (productData, ratingsByProduct) => {
       productPrice,
       productQuantity,
       productRating,
-      productAddRatingButton
+      ratingsForm
     )
 
     body.append(productDiv)
