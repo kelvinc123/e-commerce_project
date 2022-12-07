@@ -82,6 +82,7 @@ exports.login = (req, res, next) => {
       // if the password match, create token
       const token = jwt.sign(
         {
+          userId: loadedUser._id,
           username: loadedUser.username,
           first_name: loadedUser.first_name,
           last_name: loadedUser.last_name,

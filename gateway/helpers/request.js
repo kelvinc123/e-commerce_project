@@ -1,12 +1,8 @@
 const axios = require("axios");
 
-const HEADERS = {
-    'Content-Type': 'application/json'
-}
-
-const request = (url, method, req, res, next) => {
+const request = (url, method, req, res, next, headers) => {
     return axios({
-        headers: HEADERS,
+        headers: headers,
         method: method,
         url: url, 
         data: req.body

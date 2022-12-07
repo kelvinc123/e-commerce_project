@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-const appPort = 8000;
 const app = express(); // define our app using express
 
 // configure app to use bodyParser()
@@ -19,10 +18,10 @@ const username = "main_user";
 const password = "cs6650123456";
 
 // import routes
-const userRoutes = require("./routes/user.routes");
+const purchaseRoutes = require("./routes/purchase.routes");
 
 // assign API
-app.use("/", userRoutes);
+app.use("/api", purchaseRoutes);
 
 // For handling error, passed by calling next on above routes (alerts, status, etc)
 app.use((error, req, res, next) => {
@@ -32,21 +31,8 @@ app.use((error, req, res, next) => {
   res.status(status).send({ message: message, data: data });
 });
 
-// DB connection & run the app
-mongoose
-  .connect(
-    `mongodb+srv://${username}:${password}@cluster0.haxd9of.mongodb.net/User?retryWrites=true&w=majority`,
-    {
-      useNewUrlParser: true,
-    }
-  )
-  .then((result) => {
-    console.log("Successfully connected to the database");
-    app.listen(appPort, () => {
-      console.log("User Management server running on port " + appPort);
-    });
-  })
-  .catch((err) => {
-    console.log("Could not connect to the database. Error...", err);
-    process.exit();
-  });
+// Run the app
+const appPort = 7100;
+app.listen(appPort, () => {
+  console.log("Purchase server running on port " + appPort);
+});
