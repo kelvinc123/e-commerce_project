@@ -2,8 +2,9 @@
 
 ### Port
  * Gateway: 3000
+ * Catalog: 6000
+ * Purchase: 7100
  * User Management: 8000
- * Database: 4373
 
 ### Services Endpoint
  * POST `/login`
@@ -16,3 +17,6 @@
 
 Replace `<username>` with username, `<password>` with password, and `<db_name>` with the database name (case sensitive)
 
+### Rabbit
+URL: `amqps://vflvhudl:rW2MR7JIOxxJ4wkceDzwzGH_jwih3Kmh@beaver.rmq.cloudamqp.com/vflvhudl`
+Exchange: `payment`

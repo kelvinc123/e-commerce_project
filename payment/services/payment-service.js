@@ -2,7 +2,8 @@ const dao = require('../daos/payment-dao');
 const http = require('http');
 
 const jackrabbit = require('jackrabbit');
-const url = "amqps://uecfmmyx:va9u_CyOs6lWamXSEcAdBOAqtdPg9qpA@chimpanzee.rmq.cloudamqp.com/uecfmmyx";
+// const url = "amqps://uecfmmyx:va9u_CyOs6lWamXSEcAdBOAqtdPg9qpA@chimpanzee.rmq.cloudamqp.com/uecfmmyx";
+const url = "amqps://vflvhudl:rW2MR7JIOxxJ4wkceDzwzGH_jwih3Kmh@beaver.rmq.cloudamqp.com/vflvhudl";
 const rabbit = jackrabbit(url);
 const exchange = rabbit.default();
 const paymentQueue = exchange.queue({name: 'payment', durable: true});
@@ -13,12 +14,13 @@ const consume = () => {
 
 async function onMessage(data, ack, nack) {
     let payment;
-    try {
-        payment = JSON.parse(data);
-    } catch (error) {
-        console.log(error);
-        return;
-    }
+    // try {
+    //     payment = JSON.parse(data);
+    // } catch (error) {
+    //     console.log(error);
+    //     return;
+    // }
+    payment = data;
     dao.add(payment)
         .then(() => {
             console.log("\nSaved " + JSON.stringify(payment));

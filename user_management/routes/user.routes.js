@@ -6,7 +6,7 @@ const User = require("../models/user.model");
 
 const router = express.Router();
 
-router.put(
+router.post(
   "/signup",
   [
     body("username")

@@ -1,5 +1,6 @@
 const axios = require("axios");
 const { validationResult } = require("express-validator");
+const publish = require("../helpers/publisher");
 
 const PRODUCT_URL = "http://localhost:6000/api/products";
 
@@ -31,9 +32,11 @@ exports.purchase = (req, res, next) => {
       let purchasedQuantity;
       let purchasedProducts = [];
       let totalAmount = 0;
+
       availableProducts.forEach((product) => {
         purchasedQuantity = products.filter((el) => el.id == product._id)[0]
           .quantity;
+        // verify quantity
         if (purchasedQuantity > product.quantity) {
           res.send({
             message: "Purchased quantity exceed available quantity",
@@ -43,11 +46,13 @@ exports.purchase = (req, res, next) => {
             availableQuantity: product.quantity,
           });
         }
+        // add desired result
         purchasedProducts.push({
           id: product._id,
           price: product.price,
           quantity: purchasedQuantity,
         });
+        // total amount
         totalAmount =
           totalAmount + Number(product.price) * Number(purchasedQuantity);
       });
@@ -61,6 +66,10 @@ exports.purchase = (req, res, next) => {
         products: purchasedProducts,
         totalAmount: totalAmount,
       };
+      // send to queue
+      publish(purchaseData);
+
+      // send response back to user
       res.status(200).send({
         message: "Successfully purchased the product",
         purchaseData: purchaseData,

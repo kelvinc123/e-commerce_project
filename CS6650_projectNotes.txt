@@ -1,0 +1,67 @@
+localhost:5000/reviews
+localhost:6000/catalog 
+localhost:7100/purchase
+localhost:7200/payment
+localhost:8000/userManagement
+
+
+user wants to access catalog
+localhost:3000/catalog
+
+
+
+API gateway (localhost:3000) code
+
+app.get("/reviews", (req,res)) => {
+
+  // call localhost:5000/reviews
+
+}
+
+app.get("/catalog", (req,res)) => {
+
+  // res = call localhost:6000/catalog
+     return res
+
+}
+
+
+END TO END: User logs in, sees the catalog and reviews, adds the item to cart, checkout
+  - assume frontend comes from somewhere (localhost:9999/index.html)
+  - user calls localhost:3000/login, the api gateway will redirect (call localhost:8000/login)
+  - if login is successful, frontend make concurrent calls localhost:3000/catalog to localhost:3000/reviews, the api gateway will redirect to the corresponding backend endpoint. Gets the catalog json data, return it back to frontend. Gets the reviews, return it back to frontend (happening concurrently). Frontend render
+  - "Add to cart" button for each item. When the user clicks, in frontend it updates the cart array. User navigates to the cart page, being able to remove or checkout.  
+  - When the user clicks checkout, frontend calls localhost:3000/purchase, the api gateway will redirect to localhost:7000/purchase.
+  - Purchase microservice check the quantity by calling catalog microservice localhost:6000/catalogItemQuantityCheck. If have quantity, then emit topic event to Payment microservice
+ - Payment microservice listens to subscribed topic event. Process payment does its thing, calls localhost:6000/catalogItemQuantityUpdate to update item quantity
+- Let user know whether purchase was successful???????????????
+Options - 
+1. remove payment message queue and just send back response all the way back to client
+2. Frontend will always redirect back to home page (catalog), then in payment microservice implement emailing (third-party API) 
+3. Ask the TA if there is a way to send back response when using message queue?
+
+
+
+
+Next steps: Think of db references
+
+- reviews db need to reference product db
+- transaction db need to reference product db? 
+- transaction db need to reference user db? 
+- review db needs to reference user db?
+
+
+
+
+*Note: all data prepolated for now
+*Note: change Reviews to Ratings since we want to simplify it and just show the rating stars
+
+
+
+
+
+
+
+
+
+
