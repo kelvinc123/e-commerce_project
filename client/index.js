@@ -22,7 +22,7 @@ const fetchProducts = async () => {
 }
 
 const fetchProductRatings = async () => {
-  const ratingResult = await fetch("http://localhost:9000/api/ratings") // make sure port is correct
+  const ratingResult = await fetch("http://localhost:3000/api/ratings") // make sure port is correct
   const ratingData = await ratingResult.json()
   console.log(ratingData)
 
@@ -49,7 +49,7 @@ const fetchProductRatings = async () => {
 }
 
 const addProductRating = async (productId, rating) => {
-  const res = await fetch("http://localhost:9000/api/ratings", {
+  const res = await fetch("http://localhost:3000/api/ratings", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -142,8 +142,7 @@ const createDOMElements = (productData, ratingsByProduct) => {
       addProductRating(prod._id, ratingSelectList.value)
         .then(
           () =>
-            (window.location.href = window.location.href =
-              "http://localhost:5500/client/index.html")
+            (window.location.href = "http://localhost:5500/client/index.html")
         )
         .catch(() =>
           console.log("something went wrong when adding product rating")
