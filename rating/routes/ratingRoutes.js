@@ -6,5 +6,6 @@ const { protect } = require("../middleware/authMiddleware")
 router.get("/", getRatings)
 
 router.post("/", protect, addRating)
+// router.post("/", addRating)
 
 module.exports = router

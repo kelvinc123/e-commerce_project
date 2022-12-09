@@ -10,7 +10,7 @@ const login = async (event) => {
     return
   }
 
-  const res = await fetch("http://localhost:4373/login", {
+  const res = await fetch("http://localhost:3000/login", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -35,6 +35,3 @@ const login = async (event) => {
 }
 
 submitButton.addEventListener("click", login)
-
-// username: "JoDo@gmail.com",
-// password: "1234567",

@@ -1,56 +1,30 @@
 const body = document.body
 const loginAndSignup = document.querySelector(".loginAndSignup")
+const logout = document.querySelector(".logout")
 const isLoggedIn =
   localStorage.getItem("access_token") && localStorage.getItem("username")
 
+logout.addEventListener("click", () => {
+  localStorage.clear()
+  window.location.href = "http://localhost:5500/client/index.html"
+})
+
 if (isLoggedIn) {
   loginAndSignup.style.display = "none"
+  logout.style.display = "block"
 }
 
-const ratingData = [
-  {
-    _id: "mongoId_123",
-    product: "638a8c40dee05a998fc7285b",
-    user: "userId_123",
-    rating: 1,
-  },
-  {
-    _id: "mongoId_456",
-    product: "638a8c40dee05a998fc7285c",
-    user: "userId_456",
-    rating: 2,
-  },
-  {
-    _id: "mongoId_xxx",
-    product: "638a8c40dee05a998fc72858",
-    user: "userId_xxx",
-    rating: 3,
-  },
-  {
-    _id: "mongoId_yyy",
-    product: "638a8c40dee05a998fc72858",
-    user: "userId_yyy",
-    rating: 5,
-  },
-  {
-    _id: "mongoId_zzz",
-    product: "638a8c40dee05a998fc72858",
-    user: "userId_zzz",
-    rating: 4,
-  },
-]
-
 const fetchProducts = async () => {
-  const productResult = await fetch("http://localhost:8000/api/products") // make sure port is correct
+  const productResult = await fetch("http://localhost:3000/api/products") // make sure port is correct
   const productData = await productResult.json()
   console.log(productData)
   return productData
 }
 
 const fetchProductRatings = async () => {
-  // const ratingResult = await fetch("http://localhost:7000/api/ratings") // make sure port is correct
-  // const ratingData = await ratingResult.json()
-  // console.log(ratingData)
+  const ratingResult = await fetch("http://localhost:9000/api/ratings") // make sure port is correct
+  const ratingData = await ratingResult.json()
+  console.log(ratingData)
 
   let ratingsByProduct = {}
   ratingData.forEach((element) => {
@@ -72,6 +46,24 @@ const fetchProductRatings = async () => {
   })
   console.log(ratingsByProduct)
   return ratingsByProduct
+}
+
+const addProductRating = async (productId, rating) => {
+  const res = await fetch("http://localhost:9000/api/ratings", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      authorization: `${localStorage.getItem("access_token")}`,
+    },
+    body: JSON.stringify({
+      productId: productId,
+      rating: rating,
+    }),
+  })
+  const data = await res.json()
+  console.log(data)
+  return data
 }
 
 const createDOMElements = (productData, ratingsByProduct) => {
@@ -147,6 +139,15 @@ const createDOMElements = (productData, ratingsByProduct) => {
         return
       }
       console.log(ratingSelectList.value)
+      addProductRating(prod._id, ratingSelectList.value)
+        .then(
+          () =>
+            (window.location.href = window.location.href =
+              "http://localhost:5500/client/index.html")
+        )
+        .catch(() =>
+          console.log("something went wrong when adding product rating")
+        )
     })
 
     // Create form tag

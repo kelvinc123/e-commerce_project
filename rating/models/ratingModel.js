@@ -4,25 +4,20 @@ const ratingSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "userModel", // get the model name
+      ref: "User",
       required: true,
     },
-
     product: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "productModel", // get the model name
+      ref: "Product",
       required: true,
     },
-
     rating: {
       type: Number,
       required: [true, "please add a rating value (from rating schema)"],
     },
   },
-
-  {
-    timestamps: true,
-  }
+  { collection: "Rating" }
 )
 
-module.exports = mongoose.model("ratingModel", ratingSchema)
+module.exports = mongoose.model("Rating", ratingSchema)
