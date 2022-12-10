@@ -5,6 +5,7 @@
 - Gateway: 3000
 - Catalog: 6100
 - Purchase: 7100
+- Payment: 7200
 - User Management: 8000
 - Rating: 9000
 

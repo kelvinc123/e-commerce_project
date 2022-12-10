@@ -125,8 +125,16 @@ purchaseButton.addEventListener("click", () => {
   }
   buyProducts(creditCardInput.value)
     .then((response) => {
-      console.log(response.message)
-      alert(response.message)
+      console.log(
+        `${response.message}\n$${JSON.stringify(
+          response.purchaseData.totalAmount
+        )} charged\n${JSON.stringify(response.purchaseData.products)}`
+      )
+      alert(
+        `${response.message}\n$${JSON.stringify(
+          response.purchaseData.totalAmount
+        )} charged\n${JSON.stringify(response.purchaseData.products)}`
+      )
       localStorage.removeItem("cartProducts")
       window.location.href = "http://localhost:5500/client/index.html"
     })
