@@ -1,6 +1,9 @@
 const body = document.body
 const loginAndSignup = document.querySelector(".loginAndSignup")
+const cart = document.querySelector(".cart")
 const logout = document.querySelector(".logout")
+const cartProducts = JSON.parse(localStorage.getItem("cartProducts")) || []
+
 const isLoggedIn =
   localStorage.getItem("access_token") && localStorage.getItem("username")
 
@@ -12,6 +15,10 @@ logout.addEventListener("click", () => {
 if (isLoggedIn) {
   loginAndSignup.style.display = "none"
   logout.style.display = "block"
+}
+
+if (!isLoggedIn) {
+  cart.style.display = "none"
 }
 
 const fetchProducts = async () => {
@@ -99,7 +106,7 @@ const createDOMElements = (productData, ratingsByProduct) => {
 
     const productQuantity = document.createElement("p")
     productQuantity.classList.add("product_count")
-    productQuantity.textContent = `Quantity - ${prod.quantity}`
+    productQuantity.textContent = `Available Quantity - ${prod.quantity}`
 
     const productRating = document.createElement("p")
     productRating.classList.add("product_rating")
@@ -113,14 +120,10 @@ const createDOMElements = (productData, ratingsByProduct) => {
         : 0
     }) `
 
-    // Create array of options to be added
-    const ratingOptions = ["--Choose Rating--", "1", "2", "3", "4", "5"]
-
-    // Create and append select list
+    // Create rating form, select element & options, and submit button
     const ratingSelectList = document.createElement("select")
     ratingSelectList.classList.add("rating-selectList")
-
-    // Create and append the options
+    const ratingOptions = ["--Choose Rating--", "1", "2", "3", "4", "5"]
     for (let i = 0; i < ratingOptions.length; i++) {
       const option = document.createElement("option")
       option.value = ratingOptions[i]
@@ -128,11 +131,10 @@ const createDOMElements = (productData, ratingsByProduct) => {
       ratingSelectList.appendChild(option)
     }
 
-    // Create input tag
     const ratingSelectSubmitButton = document.createElement("input")
-    ratingSelectSubmitButton.classList.add("submit-button")
+    ratingSelectSubmitButton.classList.add("rating-submit-button")
     ratingSelectSubmitButton.type = "submit"
-    ratingSelectSubmitButton.value = "submit rating"
+    ratingSelectSubmitButton.value = "Submit Rating"
     ratingSelectSubmitButton.addEventListener("click", (event) => {
       event.preventDefault()
       if (ratingSelectList.value === "--Choose Rating--") {
@@ -148,14 +150,64 @@ const createDOMElements = (productData, ratingsByProduct) => {
           console.log("something went wrong when adding product rating")
         )
     })
-
-    // Create form tag
     const ratingsForm = document.createElement("form")
     ratingsForm.classList.add("ratings-form")
     ratingsForm.appendChild(ratingSelectList)
     ratingsForm.appendChild(ratingSelectSubmitButton)
+
+    // Create Add to Cart form, input box, and submit button
+    const addToCartQuantityInput = document.createElement("input")
+    addToCartQuantityInput.classList.add("addToCart-quantity-input")
+    addToCartQuantityInput.type = "text"
+    addToCartQuantityInput.placeholder = "Enter Quantity"
+    const addToCartQuantitySubmitButton = document.createElement("input")
+    addToCartQuantitySubmitButton.classList.add("addToCart-submit-button")
+    addToCartQuantitySubmitButton.type = "submit"
+    addToCartQuantitySubmitButton.value = "Add to Cart"
+    addToCartQuantitySubmitButton.addEventListener("click", (e) => {
+      e.preventDefault()
+      if (typeof addToCartQuantityInput.value !== "string") {
+        return
+      }
+
+      const num = Number(addToCartQuantityInput.value)
+      if (Number.isInteger(num) && num > 0) {
+        const withoutLeading0 = parseInt(num, 10)
+        console.log("passed: ", withoutLeading0)
+
+        if (cartProducts.length <= 0) {
+          console.log("should be a new product and first product in the cart")
+          cartProducts.push({ ...prod, purchaseQuantity: withoutLeading0 })
+        } else {
+          let exists = false
+          cartProducts.forEach((value) => {
+            if (prod._id === value._id) {
+              console.log(`adding ${withoutLeading0}`)
+              value.purchaseQuantity += withoutLeading0
+              exists = true
+              return
+            }
+          })
+          if (!exists) {
+            console.log("should be a new product")
+            cartProducts.push({ ...prod, purchaseQuantity: withoutLeading0 })
+            exists = false
+          }
+        }
+
+        console.log("here is the cart products")
+        console.log(cartProducts)
+        localStorage.setItem("cartProducts", JSON.stringify(cartProducts))
+      }
+    })
+    const addtoCartForm = document.createElement("form")
+    addtoCartForm.classList.add("addToCart-form")
+    addtoCartForm.appendChild(addToCartQuantityInput)
+    addtoCartForm.appendChild(addToCartQuantitySubmitButton)
+
     if (!isLoggedIn) {
       ratingsForm.style.display = "none"
+      addtoCartForm.style.display = "none"
     }
 
     productDiv.append(
@@ -167,12 +219,15 @@ const createDOMElements = (productData, ratingsByProduct) => {
       productPrice,
       productQuantity,
       productRating,
-      ratingsForm
+      ratingsForm,
+      addtoCartForm
     )
 
     body.append(productDiv)
   })
 }
+
+// ================================================================================================================== //
 
 const getBoth = async () => {
   const data = await Promise.all([fetchProducts(), fetchProductRatings()])

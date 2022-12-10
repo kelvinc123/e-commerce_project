@@ -40,3 +40,17 @@ li {
   display: flex;
   gap: 3em;
 }
+
+.ratings-form {
+  margin-bottom: 0.5em;
+}
+
+.credit-card-input {
+  margin: 4em 0 0.5em 0;
+}
+
+.purchase-button {
+  font-size: 3em;
+  display: block;
+  color: lightseagreen;
+}
