@@ -2,6 +2,10 @@ const usernameInput = document.querySelector(".username-input")
 const passwordInput = document.querySelector(".password-input")
 const submitButton = document.querySelector(".submit-button")
 
+// delete this
+usernameInput.value = "test@gmail.com"
+passwordInput.value = "test123"
+
 const login = async (event) => {
   event.preventDefault()
 
@@ -10,7 +14,7 @@ const login = async (event) => {
     return
   }
 
-  const res = await fetch("http://localhost:4373/login", {
+  const res = await fetch("http://localhost:3000/login", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -35,6 +39,3 @@ const login = async (event) => {
 }
 
 submitButton.addEventListener("click", login)
-
-// username: "JoDo@gmail.com",
-// password: "1234567",

@@ -19,8 +19,9 @@ const addRating = asyncHandler(async (req, res) => {
   }
 
   const rating = await ratingModel.create({
+    // user: req.body.userId,
+    user: req.userId,
     product: req.body.productId,
-    user: req.id,
     rating: req.body.rating,
   })
 

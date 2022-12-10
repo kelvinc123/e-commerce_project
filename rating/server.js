@@ -2,7 +2,6 @@ const express = require("express")
 const cors = require("cors")
 const dotenv = require("dotenv")
 dotenv.config()
-const port = process.env.PORT || 5000
 const ratingRoutes = require("./routes/ratingRoutes")
 const { errorHandler } = require("./middleware/errorMiddleware")
 const connectDB = require("./config/db")
@@ -18,4 +17,5 @@ app.use("/api/ratings", ratingRoutes)
 
 app.use(errorHandler)
 
-app.listen(port, () => console.log(`Server started on port ${port}`))
+const port = process.env.PORT || 9000
+app.listen(port, () => console.log(`Ratings started on port ${port}`))

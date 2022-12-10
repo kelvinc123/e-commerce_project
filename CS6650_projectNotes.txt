@@ -62,6 +62,37 @@ Next steps: Think of db references
 
 
 
-
+const ratingData = [
+  {
+    _id: "mongoId_123",
+    product: "638a8c40dee05a998fc7285b",
+    user: "userId_123",
+    rating: 1,
+  },
+  {
+    _id: "mongoId_456",
+    product: "638a8c40dee05a998fc7285c",
+    user: "userId_456",
+    rating: 2,
+  },
+  {
+    _id: "mongoId_xxx",
+    product: "638a8c40dee05a998fc72858",
+    user: "userId_xxx",
+    rating: 3,
+  },
+  {
+    _id: "mongoId_yyy",
+    product: "638a8c40dee05a998fc72858",
+    user: "userId_yyy",
+    rating: 5,
+  },
+  {
+    _id: "mongoId_zzz",
+    product: "638a8c40dee05a998fc72858",
+    user: "userId_zzz",
+    rating: 4,
+  },
+]
 
 

@@ -19,16 +19,8 @@ const signup = async (event) => {
     return
   }
 
-  console.log(
-    usernameInput.value,
-    passwordInput.value,
-    firstNameInput.value,
-    lastNameInput.value,
-    addressInput.value
-  )
-
-  const res = await fetch("http://localhost:4373/signup", {
-    method: "PUT",
+  const res = await fetch("http://localhost:3000/signup", {
+    method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
