@@ -14,11 +14,16 @@ const request = (url, method, req, res, next, headers) => {
         res.status(data.statusCode).send(data.data);
     })
     .catch((err) => {
+        let data;
         // send status 500 if error, go to error handler in server.js
         if (!err.statusCode) {
             err.statusCode = 500;
         }
-        const data = err.response.data;
+        if (err.response) {
+            data = err.response.data;
+        } else {
+            data = err;
+        }
         res.send(data);
     });
 }

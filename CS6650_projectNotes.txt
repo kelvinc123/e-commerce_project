@@ -1,4 +1,4 @@
-localhost:5000/reviews
+localhost:5000/rating
 localhost:6000/catalog 
 localhost:7100/purchase
 localhost:7200/payment
